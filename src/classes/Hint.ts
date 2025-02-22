@@ -43,11 +43,11 @@ export class Hint {
         return this.#hint.entrance || "Vanilla";
     }
 
-    get uniqueId(): string {
+    get uniqueKey(): string {
         return `${this.#item.sender.slot}-${this.#item.locationId}`;
     }
 
     static getUniqueKey(hint: NetworkHint): string {
-        return `${hint.finding_player}-${hint.item}`;
+        return `${hint.finding_player}-${hint.location}`;
     }
 }
