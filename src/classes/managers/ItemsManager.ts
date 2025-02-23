@@ -13,7 +13,8 @@ import { EventBasedManager } from "./EventBasedManager.ts";
 export class ItemsManager extends EventBasedManager<ItemEvents> {
     readonly #client: Client;
     #received: Item[] = [];
-    #hints: Map<string, Hint> = new Map();
+    #hints: Hint[] = [];
+    #hintIndexLookup: Map<string, number> = new Map();
 
     /**
      * Instantiates a new ItemsManager.
@@ -43,7 +44,8 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
                 this.emit("itemsReceived", [this.#received.slice(packet.index, packet.index + count), packet.index]);
             })
             .on("connected", () => {
-                this.#hints = new Map();
+                this.#hints = [];
+                this.#hintIndexLookup = new Map();
                 this.#received = [];
                 this.#client.storage
                     .notify(
@@ -52,7 +54,11 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
                     )
                     .then((data) => {
                         const hints = data[`_read_hints_${this.#client.players.self.team}_${this.#client.players.self.slot}`] as NetworkHint[];
-                        hints.forEach((hint) => this.#hints.set(Hint.getUniqueKey(hint), new Hint(this.#client, hint)));
+                        this.#hints = hints.map((hint, index) => {
+                            const newHint = new Hint(this.#client, hint);
+                            this.#hintIndexLookup.set(newHint.uniqueKey, index);
+                            return newHint;
+                        });
                         this.emit("hintsInitialized", [[...this.#hints.values()]]);
                     })
                     .catch((error) => {
@@ -83,15 +89,16 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
 
     #receivedHint(_: string, hints: NetworkHint[]): void {
         for (let i = 0; i < hints.length; i++) {
-            const hintUniqueId = Hint.getUniqueKey(hints[i]);
-            const matchingHint = this.#hints.get(hintUniqueId);
-            if (matchingHint && matchingHint.found !== hints[i].found) {
+            const networkHintKey = Hint.getUniqueKey(hints[i]);
+            const matchingHintIndex = this.#hintIndexLookup.get(networkHintKey);
+            if (matchingHintIndex !== undefined && this.#hints[matchingHintIndex].found !== hints[i].found) {
                 const newHint = new Hint(this.#client, hints[i]);
-                this.#hints.set(hintUniqueId, newHint);
+                this.#hints[matchingHintIndex] = newHint;
                 this.emit("hintFound", [newHint]);
-            } else if (matchingHint === undefined) {
+            } else if (matchingHintIndex === undefined) {
                 const newHint = new Hint(this.#client, hints[i]);
-                this.#hints.set(hintUniqueId, newHint);
+                this.#hintIndexLookup.set(newHint.uniqueKey, this.#hints.length);
+                this.#hints.push(newHint);
                 this.emit("hintReceived", [newHint]);
             }
         }
