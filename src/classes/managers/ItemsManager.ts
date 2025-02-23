@@ -59,7 +59,7 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
                             this.#hintIndexLookup.set(newHint.uniqueKey, index);
                             return newHint;
                         });
-                        this.emit("hintsInitialized", [[...this.#hints.values()]]);
+                        this.emit("hintsInitialized", [[...this.#hints]]);
                     })
                     .catch((error) => {
                         throw error;
@@ -79,7 +79,7 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
      * {@link ItemEvents.hintsInitialized} event.
      */
     public get hints(): Hint[] {
-        return [...this.#hints.values()];
+        return [...this.#hints];
     }
 
     /** Return the number of items received. */
