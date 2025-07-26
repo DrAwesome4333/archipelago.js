@@ -19,7 +19,6 @@ export class DataPackageManager {
     public constructor(client: Client) {
         this.#client = client;
         this.#client.socket.on("roomInfo", (packet) => {
-            this.#packages.clear();
             this.#checksums.clear();
             this.#games.clear();
 
