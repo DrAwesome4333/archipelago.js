@@ -138,7 +138,7 @@ export class DataPackageManager {
      */
     public exportPackage(): DataPackage {
         return {
-            games: this.#packages.entries().reduce((games, [game, pkg]) => {
+            games: [...this.#packages.entries()].reduce((games, [game, pkg]) => {
                 games[game] = pkg.exportPackage();
                 return games;
             }, {} as Record<string, GamePackage>),
