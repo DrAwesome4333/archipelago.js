@@ -74,7 +74,6 @@ export class Client {
         } else {
             this.options = { ...defaultClientOptions };
         }
-        console.log("hello");
         // Setup disconnection event handler to reset internal state.
         this.socket
             .on("disconnected", () => {
