@@ -62,7 +62,7 @@ export class MessageManager extends EventBasedManager<MessageEvents> {
         text = text.trim();
         const request: SayPacket = { cmd: "Say", text };
         this.#client.socket.send(request);
-        await this.wait("chat", (message) => message === text);
+        await this.wait("chat", (message) => message === text || (message.toLowerCase().startsWith("!admin login") && text.toLowerCase().startsWith("!admin login")));
     }
 
     #onPrintJSON(packet: PrintJSONPacket): void {
