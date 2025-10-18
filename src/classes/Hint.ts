@@ -1,4 +1,4 @@
-import { NetworkHint } from "../api";
+import { HintStatus, NetworkHint } from "../api";
 import { Client } from "./Client.ts";
 import { Item } from "./Item.ts";
 import { Player } from "./Player.ts";
@@ -36,6 +36,11 @@ export class Hint {
     /** Returns `true` if this item has been found. */
     get found(): boolean {
         return this.#hint.found;
+    }
+
+    /** Returns the hint status for this hint */
+    get status(): HintStatus {
+        return this.#hint.status;
     }
 
     /** Returns the entrance this location is at if entrance data is available, otherwise `"Vanilla"`. */

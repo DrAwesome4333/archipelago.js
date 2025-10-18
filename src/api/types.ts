@@ -51,6 +51,15 @@ export type JSONSerializable =
 /** A record of JSON-serializable data. */
 export type JSONRecord = { [p: string]: JSONSerializable };
 
+/** Valid statuses for hints */
+export enum HintStatus {
+    unspecified = 0,
+    no_priority = 10,
+    avoid = 20,
+    priority = 30,
+    found = 40,
+}
+
 /**
  * An object representing a hint information for a particular item and location that contains it.
  */
@@ -75,6 +84,9 @@ export type NetworkHint = {
 
     /** The classification bit flags for this item. See {@link itemsHandlingFlags} for known flags. */
     readonly item_flags: number
+
+    /** The id of the status of the hint */
+    readonly status: HintStatus
 };
 
 /**
