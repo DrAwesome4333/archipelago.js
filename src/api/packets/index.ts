@@ -10,6 +10,7 @@ import { SetPacket } from "./client/Set.ts";
 import { SetNotifyPacket } from "./client/SetNotify.ts";
 import { StatusUpdatePacket } from "./client/StatusUpdate.ts";
 import { SyncPacket } from "./client/Sync.ts";
+import { UpdateHintPacket } from "./client/UpdateHint.ts";
 import { BouncedPacket } from "./server/Bounced.ts";
 import { ConnectedPacket } from "./server/Connected.ts";
 import { ConnectionRefusedPacket } from "./server/ConnectionRefused.ts";
@@ -35,6 +36,7 @@ export * from "./client/Set.ts";
 export * from "./client/SetNotify.ts";
 export * from "./client/StatusUpdate.ts";
 export * from "./client/Sync.ts";
+export * from "./client/UpdateHint.ts";
 export * from "./server/Bounced.ts";
 export * from "./server/Connected.ts";
 export * from "./server/ConnectionRefused.ts";
@@ -60,7 +62,8 @@ export type ClientPacket =
     | SetPacket
     | SetNotifyPacket
     | StatusUpdatePacket
-    | SyncPacket;
+    | SyncPacket
+    | UpdateHintPacket;
 
 export type ServerPacket =
     | BouncedPacket

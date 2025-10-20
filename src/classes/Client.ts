@@ -1,4 +1,4 @@
-import { clientStatuses, ConnectedPacket, ConnectionRefusedPacket, ConnectPacket, JSONRecord } from "../api";
+import { clientStatuses, ConnectedPacket, ConnectionRefusedPacket, ConnectPacket, HintStatus, JSONRecord } from "../api";
 import { ArgumentError, LoginError, SocketError, UnauthenticatedError } from "../errors.ts";
 import { ClientOptions, defaultClientOptions } from "../interfaces/ClientOptions.ts";
 import { ConnectionOptions, defaultConnectionOptions } from "../interfaces/ConnectionOptions.ts";
@@ -315,6 +315,18 @@ export class Client {
             this.players.self,
             this.players.findPlayer(item.player) as Player),
         );
+    }
+
+    public updateHint(location: { id: number, player: number }, status: HintStatus) {
+        if (!this.authenticated) {
+            throw new UnauthenticatedError("Cannot update hints while not connected and authenticated.");
+        }
+
+        if (status === HintStatus.found) {
+            throw new Error("Cannot update status of hint to HINT_FOUND");
+        }
+
+        this.socket.send({ cmd: "UpdateHint", location: location.id, player: location.player, status });
     }
 
     /**
