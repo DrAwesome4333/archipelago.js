@@ -30,17 +30,18 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
                 let index = packet.index;
                 const count = packet.items.length;
                 const items = [...packet.items]; // Shallow copy to prevent modifying the received items.
-                while (items.length > 0) {
+
+                for(let i = 0; i < items.length; i++){
                     // Update received items cache at index, then increment the index value (postfix).
-                    const networkItem = items.shift() as NetworkItem;
+                    const networkItem = items[i] as NetworkItem;
                     this.#received[index++] = new Item(
                         this.#client,
                         networkItem,
                         this.#client.players.findPlayer(networkItem.player) as Player,
                         this.#client.players.self,
                     );
-                }
 
+                }
                 this.emit("itemsReceived", [this.#received.slice(packet.index, packet.index + count), packet.index]);
             })
             .on("connected", () => {
