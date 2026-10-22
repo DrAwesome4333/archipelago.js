@@ -36,7 +36,7 @@ export type HintStatusJSONMessagePart = {
     readonly text: string
 
     /** The status of the hint */
-    readonly hint_status: typeof hintStatuses
+    readonly hint_status: typeof hintStatuses[keyof typeof hintStatuses]
 };
 
 /**
