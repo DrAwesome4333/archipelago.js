@@ -1,4 +1,4 @@
-import { NetworkHint, NetworkItem } from "../../api";
+import { NetworkHint } from "../../api";
 import { ItemEvents } from "../../events/ItemEvents.ts";
 import { Client } from "../Client.ts";
 import { Hint } from "../Hint.ts";
@@ -30,9 +30,8 @@ export class ItemsManager extends EventBasedManager<ItemEvents> {
                 let index = packet.index;
                 const count = packet.items.length;
                 const items = [...packet.items]; // Shallow copy to prevent modifying the received items.
-                while (items.length > 0) {
+                for (const networkItem of items) {
                     // Update received items cache at index, then increment the index value (postfix).
-                    const networkItem = items.shift() as NetworkItem;
                     this.#received[index++] = new Item(
                         this.#client,
                         networkItem,
