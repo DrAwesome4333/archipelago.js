@@ -158,7 +158,7 @@ export class HintStatusMessageNode extends BaseMessageNode {
     public readonly type = "hint_status";
 
     /** The {@link hintStatuses} of this node. */
-    public readonly hint_status: typeof hintStatuses;
+    public readonly hint_status: typeof hintStatuses[keyof typeof hintStatuses];
 
     /**
      * Instantiates a new message node object.
