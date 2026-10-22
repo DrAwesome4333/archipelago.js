@@ -222,6 +222,7 @@ export class PlayerMessageNode extends BaseMessageNode {
      * @internal
      * @param client The client object containing additional context metadata for this node.
      * @param part The underlying message part component from the network protocol.
+     * @throws {@link Error} when {@link part} does not name a player on the current player's team.
      */
     public constructor(client: Client, part: TextJSONMessagePart) {
         super(client, part);
