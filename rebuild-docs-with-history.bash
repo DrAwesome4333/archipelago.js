@@ -107,6 +107,6 @@ cd ..
 mv $(realpath old-version-docs/docs/stable) docs/v2.1.0
 
 
-# current (v2.2.1)
+# current (v2.2.x)
 rm -rf old-version-docs
 bun run docs
